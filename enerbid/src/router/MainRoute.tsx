@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import DashBoard from '../pages/DashBoard'
 import MainLayout from '../layouts/MainLayout'
 import SimulationPage from '@/pages/Simulation'
+import Benchmark from '@/pages/BenchMark'
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ export const router = createBrowserRouter([
       {
         path: 'simulation',
         element: <SimulationPage />,
+      },
+      {
+        path: 'benchmark',
+        element: <Benchmark />,
       },
     ],
   },

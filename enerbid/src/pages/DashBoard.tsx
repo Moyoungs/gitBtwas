@@ -1,17 +1,82 @@
-import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-// import { useSimulationStore } from '../store'
+import { useNavigate } from 'react-router-dom'
 
-export default function DashBoard() {
-  const { marketType } = useParams()
-//   const setMarketType = useSimulationStore((s) => s.setMarketType)
+type MarketType = 'DAM' | 'RTM'
 
-  // URL → Zustand 동기화 (마운트 시)
-  useEffect(() => {
-    if (marketType === 'DAM' || marketType === 'RTM') {
-    //   setMarketType(marketType)
-    }
-  }, [marketType])
+const menuItems: { type: MarketType; label: string; description: string }[] = [
+  {
+    type: 'DAM',
+    label: '시뮬레이션 페이지 이동',
+    description: '',
+    // description: 'Day-Ahead Market 정산 시뮬레이션',
+  },
+]
 
-  return <div>DashBoard Page</div>
+export default function DashboardPage() {
+  const navigate = useNavigate()
+
+  return (
+    <div style={{
+      padding: '48px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '32px',
+    }}>
+
+      {/* 헤더 */}
+      <div>
+        <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 700 }}>
+          ERCOT 정산 시뮬레이션
+        </h1>
+        <p style={{ margin: '8px 0 0', color: '#666', fontSize: '14px' }}>
+          시뮬레이션 유형을 선택하세요
+        </p>
+      </div>
+
+      {/* 카드 버튼 목록 */}
+      <div style={{ display: 'flex', gap: '16px' }}>
+        {menuItems.map((item) => (
+          <button
+            key={item.type}
+            onClick={() => navigate(`/simulation`)}
+            // onClick={() => navigate(`/simulation/${item.type}`)}
+            style={{
+              width: '200px',
+              padding: '24px',
+              border: '1px solid #ddd',
+              borderRadius: '8px',
+              backgroundColor: '#fff',
+              cursor: 'pointer',
+              textAlign: 'left',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+              transition: 'all 0.2s',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = '#0078d4'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,120,212,0.15)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = '#ddd'
+              e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.06)'
+            }}
+          >
+            <span style={{
+              fontSize: '24px',
+            }}>
+              {item.type === 'DAM' ? '📊' : '⚡'}
+            </span>
+            <span style={{ fontWeight: 600, fontSize: '15px' }}>
+              {item.label}
+            </span>
+            <span style={{ fontSize: '12px', color: '#888' }}>
+              {item.description}
+            </span>
+          </button>
+        ))}
+      </div>
+
+    </div>
+  )
 }

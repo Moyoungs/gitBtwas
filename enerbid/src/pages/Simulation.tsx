@@ -5,11 +5,24 @@ import { setMarketType } from '../store/simulationSlice'
 
 type MarketType = 'DAM' | 'RTM'
 
+const menuItems: { type: MarketType; label: string; description: string }[] = [
+  {
+    type: 'DAM',
+    label: 'DAM 시뮬레이션',
+    description: 'Day-Ahead Market 정산 시뮬레이션',
+  },
+  {
+    type: 'RTM',
+    label: 'RTM 시뮬레이션',
+    description: 'Real-Time Market 정산 시뮬레이션',
+  },
+]
+
 export default function SimulationPage() {
   const { marketType } = useParams<{ marketType: MarketType }>()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const currentMarketType = useAppSelector((s) => s.simulation.marketType)
+//   const currentMarketType = useAppSelector((s) => s.simulation.marketType)
 
   // URL → Redux 동기화
   useEffect(() => {
@@ -18,99 +31,76 @@ export default function SimulationPage() {
     }
   }, [marketType])
 
-  const handleMarketTypeChange = (type: MarketType) => {
-    dispatch(setMarketType(type))
-    navigate(`/simulation/${type}`)
-  }
+//   const handleMarketTypeChange = (type: MarketType) => {
+//     dispatch(setMarketType(type))
+//     navigate(`/simulation/${type}`)
+//   }
 
-  return (
-    <div style={{ display: 'flex', height: '100vh' }}>
-
-      {/* 좌측 설정 패널 */}
-      <aside style={{
-        width: '260px',
-        borderRight: '1px solid #ddd',
-        padding: '24px 16px',
+//   const navigate = useNavigate()
+  
+    return (
+      <div style={{
+        padding: '48px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '24px',
+        gap: '32px',
       }}>
-        <h2 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>
-          설정
-        </h2>
-
-        {/* MarketType 선택 */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label style={{ fontSize: '13px', color: '#666' }}>Market Type</label>
-          <div style={{ display: 'flex', gap: '8px' }}>
-            {(['DAM', 'RTM'] as MarketType[]).map((type) => (
-              <button
-                key={type}
-                onClick={() => handleMarketTypeChange(type)}
-                style={{
-                  flex: 1,
-                  padding: '8px 0',
-                  border: '1px solid',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontWeight: currentMarketType === type ? 700 : 400,
-                  backgroundColor: currentMarketType === type ? '#0078d4' : '#fff',
-                  color: currentMarketType === type ? '#fff' : '#333',
-                  borderColor: currentMarketType === type ? '#0078d4' : '#ccc',
-                  transition: 'all 0.2s',
-                }}
-              >
-                {type}
-              </button>
-            ))}
-          </div>
+  
+        {/* 헤더 */}
+        <div>
+          <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 700 }}>
+            시뮬레이션 페이지
+          </h1>
+          <p style={{ margin: '8px 0 0', color: '#666', fontSize: '14px' }}>
+            시뮬레이션 유형을 선택하세요
+          </p>
         </div>
-
-        {/* 실행 버튼 */}
-        <button
-          style={{
-            marginTop: 'auto',
-            padding: '10px',
-            backgroundColor: '#0078d4',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontWeight: 600,
-          }}
-          onClick={() => alert(`${currentMarketType} 시뮬레이션 실행`)}
-        >
-          실행
-        </button>
-      </aside>
-
-      {/* 우측 차트 영역 */}
-      <main style={{
-        flex: 1,
-        padding: '24px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
-      }}>
-        <h2 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>
-          {currentMarketType} 시뮬레이션 결과
-        </h2>
-
-        {/* 차트 플레이스홀더 */}
-        <div style={{
-          flex: 1,
-          border: '1px dashed #ccc',
-          borderRadius: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#aaa',
-          fontSize: '14px',
-        }}>
-          차트 영역 — ECharts / KendoReact Charts
+  
+        {/* 카드 버튼 목록 */}
+        <div style={{ display: 'flex', gap: '16px' }}>
+          {menuItems.map((item) => (
+            <button
+              key={item.type}
+            //   onClick={() => navigate(`/simulation`)}
+              onClick={() => navigate(`/simulation/${item.type}`)}
+              style={{
+                width: '200px',
+                padding: '24px',
+                border: '1px solid #ddd',
+                borderRadius: '8px',
+                backgroundColor: '#fff',
+                cursor: 'pointer',
+                textAlign: 'left',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
+                transition: 'all 0.2s',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#0078d4'
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,120,212,0.15)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = '#ddd'
+                e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.06)'
+              }}
+            >
+              <span style={{
+                fontSize: '24px',
+              }}>
+                {item.type === 'DAM' ? '📊' : '⚡'}
+              </span>
+              <span style={{ fontWeight: 600, fontSize: '15px' }}>
+                {item.label}
+              </span>
+              <span style={{ fontSize: '12px', color: '#888' }}>
+                {item.description}
+              </span>
+            </button>
+          ))}
         </div>
-      </main>
-
-    </div>
-  )
+  
+      </div>
+    )
 }
