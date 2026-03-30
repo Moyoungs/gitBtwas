@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import DashBoard from '../pages/DashBoard'
 import MainLayout from '../layouts/MainLayout'
+import SimulationPage from '@/pages/Simulation'
 
 export const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ export const router = createBrowserRouter([
       {
         path: 'dashBoard',
         element: <DashBoard />,
+      },
+      {
+        path: 'simulation',
+        element: <SimulationPage />,
       },
     ],
   },

@@ -13,5 +13,5 @@ export default function DashBoard() {
     }
   }, [marketType])
 
-  return <div>Simulation Page</div>
+  return <div>DashBoard Page</div>
 }
