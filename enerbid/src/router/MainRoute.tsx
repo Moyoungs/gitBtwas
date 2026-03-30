@@ -3,12 +3,24 @@ import DashBoard from '../pages/DashBoard'
 import MainLayout from '../layouts/MainLayout'
 import SimulationPage from '@/pages/Simulation'
 import Benchmark from '@/pages/BenchMark'
+import { lazy, Suspense } from 'react'
+import NotFoundComponent from '@/pages/NotFoundComponent'
 
-export const router = createBrowserRouter([
+// const mainBidLayout = lazy(() => import("../layouts/MainLayout.tsx"));
+
+
+
+const router = [
   {
     path: '/',
-    element: <MainLayout />,
+    element: (<Suspense><MainLayout /></Suspense>),
+    name : '메인',
     children: [
+      {
+        path : "*",
+        Element : <NotFoundComponent/>,
+
+      },
       {
         index: true,
         element: <DashBoard />,
@@ -27,4 +39,9 @@ export const router = createBrowserRouter([
       },
     ],
   },
-])
+];
+
+
+const mainRoute = createBrowserRouter(router);
+
+export default mainRoute;
